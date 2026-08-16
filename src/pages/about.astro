@@ -1,0 +1,83 @@
+---
+import Base from '../layouts/Base.astro';
+import { company } from '../data/company';
+---
+
+<Base
+  title="About"
+  description="KCNEX Innovations is a small product company building software that protects people from online scams. Built in India, serving families in the US, UK, and Canada."
+>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">About</p>
+      <h1 class="page-title">A small company with a narrow focus</h1>
+
+      <div class="prose lede">
+        <p>
+          KCNEX Innovations builds consumer software that protects people
+          online. We are small, we are self-directed, and we work on one class
+          of problem at a time.
+        </p>
+      </div>
+
+      <div class="prose body">
+        <h2>Why we exist</h2>
+        <p>
+          Our first product started with a specific incident: a founder watched
+          a family member nearly lose everything to a tech-support scam. A fake
+          pop-up, a phone number, and a request to install remote-access
+          software. It was textbook — and it very nearly worked.
+        </p>
+        <p>
+          The uncomfortable part was that every piece of technology needed to
+          stop it already existed. It had simply never been assembled for the
+          person actually at risk. That gap is what KCNEX exists to close.
+        </p>
+
+        <h2>What we are, honestly</h2>
+        <p>
+          We are a small team, not an enterprise. We are built in {company.builtIn},
+          and our products serve families in the {company.serves.join(', ')}. We
+          would rather tell you that plainly than dress it up — you can judge
+          the software on what it does.
+        </p>
+        <p>
+          KCNEX is the company. <a href="https://kinsentry.com">KinSentry</a> is
+          what we have shipped so far. As we build more, each product will stand
+          on its own and each will be listed on this site.
+        </p>
+
+        <h2>How we think about trust</h2>
+        <p>
+          Protective software asks for a lot of trust: it sits between someone
+          and their browser, at exactly the moment they are most vulnerable. We
+          think that trust is earned by being boring and verifiable — publishing
+          what we collect, answering security reports, and never claiming more
+          than we can demonstrate.
+        </p>
+        <p>
+          If you find something on this site that is inaccurate, we want to know.
+          Write to <a href={`mailto:${company.email.general}`}>{company.email.general}</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-title {
+    font-size: clamp(36px, 6vw, 60px);
+    max-width: 18ch;
+    margin-bottom: 24px;
+  }
+
+  .lede {
+    font-size: clamp(17px, 2vw, 20px);
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .body {
+    margin-top: 8px;
+  }
+</style>

@@ -1,0 +1,148 @@
+---
+import Base from '../layouts/Base.astro';
+import { company } from '../data/company';
+---
+
+<Base
+  title="Security"
+  description="How to report a security vulnerability to KCNEX Innovations, what we commit to, and our responsible disclosure policy."
+>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">Security</p>
+      <h1 class="page-title">Responsible disclosure</h1>
+      <p class="prose lede">
+        We build protective software, so we take reports about our own security
+        seriously. If you have found a vulnerability in an KCNEX product, we
+        want to hear from you.
+      </p>
+
+      <div class="report-box">
+        <h2 class="report-title">Report a vulnerability</h2>
+        <a class="report-email" href={`mailto:${company.email.security}`}>
+          {company.email.security}
+        </a>
+        <p class="report-note">
+          Include the product, the version, and steps to reproduce. If you need
+          encryption, say so in your first message and we will arrange it.
+        </p>
+      </div>
+
+      <div class="prose body">
+        <h2>What we commit to</h2>
+        <ul>
+          <li>We will acknowledge your report within five working days.</li>
+          <li>
+            We will tell you honestly whether we consider it a vulnerability,
+            and why.
+          </li>
+          <li>
+            We will keep you updated while we work on a fix, and tell you when
+            it ships.
+          </li>
+          <li>
+            We will credit you publicly if you want the credit, and stay quiet
+            about you if you do not.
+          </li>
+          <li>
+            We will not pursue legal action against researchers who follow the
+            guidelines below.
+          </li>
+        </ul>
+
+        <h2>What we ask of you</h2>
+        <ul>
+          <li>
+            Give us a reasonable window to fix the issue before disclosing it
+            publicly.
+          </li>
+          <li>
+            Do not access, modify, or delete data belonging to anyone else. If
+            you encounter user data, stop and tell us.
+          </li>
+          <li>
+            Do not run denial-of-service tests, send spam, or use social
+            engineering against our team or our users.
+          </li>
+          <li>Test only against your own accounts and installations.</li>
+        </ul>
+
+        <h2>Scope</h2>
+        <p>
+          Every product listed on our <a href="/#products">products page</a> is
+          in scope, along with this website and our product websites. Third
+          party services we merely use — our host, our email provider — should
+          be reported to those vendors directly.
+        </p>
+
+        <h2>Out of scope</h2>
+        <p>
+          Reports that amount only to scanner output with no demonstrated
+          impact, missing security headers with no exploit path, or social
+          engineering of our staff are generally not something we will action.
+          If you think your case is an exception, tell us why and we will look.
+        </p>
+
+        <h2>No bounty, yet</h2>
+        <p>
+          We are a small company and we do not currently run a paid bounty
+          programme. We would rather say that up front than imply a reward that
+          does not exist. Credit, a genuine thank you, and a fast fix are what
+          we can offer today.
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-title {
+    font-size: clamp(36px, 6vw, 60px);
+    margin-bottom: 20px;
+  }
+
+  .lede {
+    font-size: clamp(17px, 2vw, 20px);
+  }
+
+  .report-box {
+    margin: 40px 0 8px;
+    padding: 28px;
+    background: var(--accent);
+    border: 1px solid rgba(194, 65, 12, 0.22);
+    border-radius: var(--radius-lg);
+  }
+
+  .report-title {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin-bottom: 10px;
+  }
+
+  .report-email {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    font-family: var(--font-serif);
+    font-size: clamp(22px, 3vw, 30px);
+    color: var(--foreground);
+    text-decoration: none;
+    word-break: break-word;
+  }
+
+  .report-email:hover {
+    color: var(--primary);
+    text-decoration: underline;
+  }
+
+  .report-note {
+    margin-top: 8px;
+    font-size: 15px;
+    color: var(--muted-foreground);
+    max-width: var(--measure);
+  }
+</style>

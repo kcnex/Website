@@ -1,0 +1,141 @@
+---
+import Logo from './Logo.astro';
+import { company, navLinks } from '../data/company';
+
+const path = Astro.url.pathname;
+---
+
+<header class="nav">
+  <div class="container nav-inner">
+    <a href="/" class="brand" aria-label={`${company.name} — home`}>
+      <Logo size={28} />
+      <span class="brand-text">
+        <span class="brand-name">KCNEX</span>
+        <span class="brand-suffix">Innovations</span>
+      </span>
+    </a>
+
+    <nav aria-label="Primary">
+      <ul class="nav-links">
+        {
+          navLinks.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                aria-current={path === link.href ? 'page' : undefined}
+              >
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-nav);
+    background: var(--nav-bg);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    min-height: 68px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* 44px min touch target — the 28px mark alone is too small to tap. */
+    min-height: 44px;
+    text-decoration: none;
+    color: var(--foreground);
+  }
+
+  .brand-text {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+  }
+
+  .brand-name {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 17px;
+    letter-spacing: 0.02em;
+  }
+
+  .brand-suffix {
+    font-family: var(--font-serif);
+    font-size: 15px;
+    font-style: italic;
+    color: var(--muted-foreground);
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .nav-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 13px;
+    border-radius: var(--radius);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--muted-foreground);
+    text-decoration: none;
+    transition: color var(--dur) var(--ease),
+                background-color var(--dur) var(--ease);
+  }
+
+  .nav-links a:hover {
+    color: var(--foreground);
+    background: var(--accent);
+  }
+
+  .nav-links a[aria-current='page'] {
+    color: var(--primary);
+    font-weight: 600;
+  }
+
+  /* Below 640px the brand suffix and label set would crowd; drop the
+     suffix and let the links wrap to their own centred row. */
+  @media (max-width: 640px) {
+    .nav-inner {
+      flex-direction: column;
+      gap: 0;
+      padding-block: 10px;
+    }
+
+    .brand-suffix {
+      display: none;
+    }
+
+    .nav-links {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .nav-links a {
+      padding: 0 10px;
+      font-size: 14px;
+    }
+  }
+</style>

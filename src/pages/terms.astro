@@ -1,0 +1,124 @@
+---
+import Base from '../layouts/Base.astro';
+import { company } from '../data/company';
+
+/*
+ * Terms for THIS WEBSITE only — not for the products. Product terms
+ * (subscriptions, billing, refunds, acceptable use) belong with the product;
+ * KinSentry's live at kinsentry.com/terms.html.
+ *
+ * TODO(kcnex): this is a plain-English scaffold, NOT reviewed legal advice.
+ * Have a lawyer read it and set the governing-law section before launch.
+ */
+
+const updated = 'TODO: date of last review';
+---
+
+<Base
+  title="Terms of Service"
+  description="Terms of use for the KCNEX Innovations website — what you may do with our content, accuracy, liability, and how to reach us about them."
+>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">Legal</p>
+      <h1 class="page-title">Terms of Service</h1>
+      <p class="updated">Last updated: {updated}</p>
+
+      <div class="prose body">
+        <div class="callout">
+          <p>
+            <strong>These terms cover this website.</strong> Using one of our
+            products is governed by that product's own terms — for KinSentry,
+            see the <a href="https://kinsentry.com/terms.html">KinSentry terms</a>.
+          </p>
+        </div>
+
+        <h2>Using this site</h2>
+        <p>
+          This site is provided for information about {company.legalEntity} and
+          its products. You may read it, link to it, and quote reasonable
+          portions of it with attribution.
+        </p>
+
+        <h2>Our content</h2>
+        <p>
+          The text, design, logos, and marks on this site belong to
+          {company.legalEntity} unless stated otherwise. Please do not
+          reproduce our branding in a way that suggests we endorse or are
+          affiliated with something we are not.
+        </p>
+
+        <h2>Accuracy</h2>
+        <p>
+          We work to keep this site accurate, and we would genuinely like to
+          hear about it if something here is wrong. That said, we provide it
+          "as is" — we do not warrant that every page is complete or current at
+          every moment, and product capabilities change as we ship.
+        </p>
+
+        <h2>Links to other sites</h2>
+        <p>
+          Where we link elsewhere, we do not control that destination and are
+          not responsible for its content or its privacy practices.
+        </p>
+
+        <h2>Liability</h2>
+        <p>
+          To the extent the law allows, {company.legalEntity} is not liable for
+          indirect or consequential loss arising from your use of this website.
+          Nothing here limits liability that cannot lawfully be limited.
+        </p>
+        <!-- TODO(kcnex): counsel should confirm this clause is enforceable in
+             each jurisdiction you serve (US, UK, CA) and adjust the wording. -->
+
+        <h2>Changes</h2>
+        <p>
+          We may update these terms. The date at the top reflects the last
+          revision, and continuing to use the site means you accept the current
+          version.
+        </p>
+
+        <h2>Governing law</h2>
+        <p>
+          <!-- TODO(kcnex): set the governing jurisdiction with counsel. This is
+               deliberately left blank rather than guessed. -->
+          To be confirmed. If you need this settled before dealing with us,
+          write to us and we will tell you where we are incorporated and which
+          law applies.
+        </p>
+
+        <h2>Contact</h2>
+        <p>
+          Questions about these terms go to
+          <a href={`mailto:${company.email.general}`}>{company.email.general}</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-title {
+    font-size: clamp(36px, 6vw, 56px);
+    margin-bottom: 10px;
+  }
+
+  .updated {
+    font-size: 14px;
+    color: var(--muted-foreground);
+    margin-bottom: 28px;
+  }
+
+  .callout {
+    padding: 20px 22px;
+    background: var(--card);
+    border-left: 3px solid var(--primary);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    margin-bottom: 8px;
+  }
+
+  .callout p {
+    margin: 0;
+    font-size: 15px;
+  }
+</style>

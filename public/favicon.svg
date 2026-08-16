@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <!-- Standalone file: it cannot read the site's CSS tokens, so the palette is
+       inlined and flipped here. Keep in sync with src/components/Logo.astro. -->
+  <style>
+    .block { fill: #1a2530; }
+    .mark  { stroke: #83c4e7; }
+    @media (prefers-color-scheme: dark) {
+      .block { fill: #e5e9ee; }
+      .mark  { stroke: #1a6289; }
+    }
+  </style>
+  <path class="block" d="M3 2.5h18v13.2c0 .55-.27 1.07-.72 1.39L12.58 22.6a1 1 0 0 1-1.16 0L3.72 17.09A1.7 1.7 0 0 1 3 15.7V2.5Z"/>
+  <g class="mark" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M9.7 8.4V15.6"/>
+    <path d="M14.8 8.4 10.4 12l4.4 3.6"/>
+  </g>
+</svg>

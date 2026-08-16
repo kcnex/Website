@@ -1,0 +1,181 @@
+---
+import Base from '../layouts/Base.astro';
+import { company } from '../data/company';
+
+/*
+ * Deliberately no contact <form>. A form that only fakes a success message
+ * (as the current KinSentry contact page does) is worse than no form: it
+ * silently drops real messages. Plain mailto: links are honest and work.
+ * If a form is wanted later, wire it to a real endpoint first.
+ */
+const channels = [
+  {
+    label: 'General and partnerships',
+    email: company.email.general,
+    note: 'Company questions, partnership and press enquiries.',
+  },
+  {
+    label: 'KinSentry support',
+    email: company.kinsentryEmail.general,
+    note: 'Help with the extension, billing, or your account.',
+  },
+  {
+    label: 'Report a scam',
+    email: company.kinsentryEmail.report,
+    note: 'Send us a scam number or site and we will look at it.',
+  },
+  {
+    label: 'Security disclosure',
+    email: company.email.security,
+    note: 'Vulnerabilities and responsible disclosure.',
+  },
+];
+---
+
+<Base
+  title="Contact"
+  description="Get in touch with KCNEX Innovations — general enquiries, partnerships, product support, scam reports, and security disclosure."
+>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">Contact</p>
+      <h1 class="page-title">Talk to a person</h1>
+      <p class="prose lede">
+        Every address below reaches the people who build the software. Pick
+        whichever fits — we would rather you send it to the wrong one than not
+        send it.
+      </p>
+
+      <ul class="channels">
+        {
+          channels.map((channel) => (
+            <li class="channel">
+              <h2 class="channel-label">{channel.label}</h2>
+              <a class="channel-email" href={`mailto:${channel.email}`}>
+                {channel.email}
+              </a>
+              <p class="channel-note">{channel.note}</p>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="detail-block">
+        <h2 class="detail-title">Company details</h2>
+        <dl class="details">
+          <div>
+            <dt>Legal entity</dt>
+            <dd>{company.legalEntity}</dd>
+          </div>
+          <div>
+            <dt>Built in</dt>
+            <dd>{company.builtIn}</dd>
+          </div>
+          <div>
+            <dt>Serving</dt>
+            <dd>{company.serves.join(', ')}</dd>
+          </div>
+          {
+            company.address && (
+              <div>
+                <dt>Address</dt>
+                <dd>{company.address}</dd>
+              </div>
+            )
+          }
+        </dl>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-title {
+    font-size: clamp(36px, 6vw, 60px);
+    margin-bottom: 20px;
+  }
+
+  .lede {
+    font-size: clamp(17px, 2vw, 20px);
+  }
+
+  .channels {
+    list-style: none;
+    padding: 0;
+    margin: 44px 0 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: 20px;
+  }
+
+  .channel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+  }
+
+  .channel-label {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    margin-bottom: 10px;
+  }
+
+  .channel-email {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+    font-family: var(--font-serif);
+    font-size: 20px;
+    color: var(--primary);
+    text-decoration: none;
+    word-break: break-word;
+  }
+
+  .channel-email:hover {
+    text-decoration: underline;
+  }
+
+  .channel-note {
+    margin-top: 8px;
+    font-size: 14.5px;
+    color: var(--muted-foreground);
+  }
+
+  .detail-block {
+    margin-top: 48px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+  }
+
+  .detail-title {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+
+  .details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+    gap: 20px;
+    margin: 0;
+  }
+
+  dt {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    margin-bottom: 5px;
+  }
+
+  dd {
+    margin: 0;
+    font-size: 16px;
+    color: var(--foreground);
+  }
+</style>

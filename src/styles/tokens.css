@@ -1,0 +1,398 @@
+/*
+ * KCNEX Innovations — design tokens
+ * ---------------------------------
+ * Palette, radii, and fonts come from the KCNEX theme (tweakcn/shadcn-shaped).
+ * Mapped to plain CSS custom properties: this site has no Tailwind, so the
+ * source theme's `@theme inline` block (which only aliases these for Tailwind
+ * utilities) is intentionally omitted.
+ *
+ * DARK MODE: the source theme switches on a `.dark` class, which assumes a JS
+ * theme toggle. This site ships zero JS, so dark mode follows the OS via
+ * prefers-color-scheme instead. If a toggle is ever added, reintroduce
+ * `.dark` / `.light` classes carrying the same values as the media query below.
+ *
+ * Every foreground/background pair in use is measured — see BRAND.md.
+ */
+
+:root {
+  color-scheme: light;
+
+  /* ── Theme palette (light) ─────────────────────────────── */
+  --background: #f7f7f8;
+  --foreground: #1a2530;
+  --card: #ffffff;
+  --card-foreground: #1a2530;
+  --popover: #ffffff;
+  --popover-foreground: #1a2530;
+  --primary: #1a6289;
+  --primary-foreground: #ffffff;
+  --secondary: #ebeef2;
+  --secondary-foreground: #1a2530;
+  --muted: #ebeef2;
+  --muted-foreground: #5a6573;
+  --accent: #d9e6ee;
+  --accent-foreground: #0f4866;
+  --destructive: #b8413c;
+  --destructive-foreground: #ffffff;
+  --border: #dbe0e6;
+  --input: #dbe0e6;
+  --ring: #1d6c96;
+
+  --chart-1: #1d6c96;
+  --chart-2: #83c4e7;
+  --chart-3: #144a67;
+  --chart-4: #2f7a5c;
+  --chart-5: #d9a24c;
+
+  /* ── Site extensions (light) ───────────────────────────────
+   * The theme is app-shaped and has no token for a full-bleed emphasis band,
+   * a *visible* interactive border, or hover states. These fill those gaps,
+   * derived from the theme's own colours. */
+
+  /* Emphasis band: inverts in light, lifts in dark. */
+  --band: #1a2530;              /* = --foreground */
+  --band-foreground: #f7f7f8;   /* 14.52:1 on --band */
+  --band-muted: #a8b4c2;        /*  7.38:1 on --band */
+  --band-accent: #83c4e7;       /*  8.15:1 on --band (= --chart-2) */
+  --band-border: rgba(247, 247, 248, 0.16);
+
+  /* --border (#dbe0e6) is 1.24:1 on --background — fine as a decorative
+   * hairline, but it FAILS WCAG 1.4.11 (3:1) for anything that conveys a
+   * control's boundary. Outline buttons use this instead. */
+  --border-strong: #7d8a99;     /*  3.29:1 on --background */
+
+  --primary-hover: #144a67;     /*  8.90:1 (= --chart-3) */
+  --success: #2f7a5c;           /*  4.83:1 (= --chart-4) — "live" status only */
+
+  /* Logo: the mark must contrast with the block, which flips per mode.
+   * --primary on the light-mode block is only 2.33:1, hence --chart-2. */
+  --logo-block: #1a2530;         /* = --foreground */
+  --logo-mark: #83c4e7;          /*  8.15:1 on --logo-block */
+  --logo-mark-on-light: #1a6289; /*  >=5.46:1 when the block is light */
+
+  /* ── Shape ─────────────────────────────────────────────── */
+  --radius: 0.625rem;                      /* 10px */
+  --radius-sm: calc(var(--radius) - 4px);  /*  6px */
+  --radius-lg: calc(var(--radius) + 4px);  /* 14px */
+  --spacing: 0.25rem;
+
+  /* ── Type ──────────────────────────────────────────────── */
+  --font-sans: Geist, ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Instrument Serif', ui-serif, Georgia, serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --letter-spacing: 0em;
+
+  /* ── Shadow (composed from the theme's ingredients) ────── */
+  --shadow-offset-x: 0px;
+  --shadow-offset-y: 1px;
+  --shadow-blur: 4px;
+  --shadow-spread: -1px;
+  --shadow-color: #1a2530;
+  --shadow-opacity: 0.05;
+  --shadow: var(--shadow-offset-x) var(--shadow-offset-y) var(--shadow-blur)
+    var(--shadow-spread)
+    color-mix(in srgb, var(--shadow-color) calc(var(--shadow-opacity) * 100%), transparent);
+  --shadow-lg: 0 1px 2px
+      color-mix(in srgb, var(--shadow-color) calc(var(--shadow-opacity) * 100%), transparent),
+    0 8px 24px
+      color-mix(in srgb, var(--shadow-color) calc(var(--shadow-opacity) * 140%), transparent);
+
+  /* ── Layout & motion ───────────────────────────────────── */
+  --measure: 68ch;
+  --container: 1120px;
+  --gutter: clamp(20px, 5vw, 40px);
+  --ease: cubic-bezier(0.2, 0, 0.2, 1);
+  --dur: 200ms;
+  --z-nav: 50;
+
+  /* Nav backdrop, tinted to match --background in each mode. */
+  --nav-bg: rgba(247, 247, 248, 0.88);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+
+    --background: #0f1419;
+    --foreground: #e5e9ee;
+    --card: #161c24;
+    --card-foreground: #e5e9ee;
+    --popover: #1c232d;
+    --popover-foreground: #e5e9ee;
+    --primary: #7ab0d0;
+    --primary-foreground: #0f1419;
+    --secondary: #1e2630;
+    --secondary-foreground: #e5e9ee;
+    --muted: #1e2630;
+    --muted-foreground: #8590a0;
+    --accent: #1e2630;
+    --accent-foreground: #a8cfe3;
+    --destructive: #dc6e69;
+    --destructive-foreground: #160807;
+    --border: #28313d;
+    --input: #28313d;
+    --ring: #7ab0d0;
+
+    --chart-1: #7ab0d0;
+    --chart-2: #a8cfe3;
+    --chart-3: #5ba3cc;
+    --chart-4: #56ad84;
+    --chart-5: #e8b25c;
+
+    /* Band lifts off the page instead of inverting — a light band in dark
+     * mode would glare. */
+    --band: #161c24;              /* = --card */
+    --band-foreground: #e5e9ee;   /* 14.05:1 on --band */
+    --band-muted: #8590a0;        /*  5.30:1 on --band */
+    --band-accent: #7ab0d0;       /*  7.30:1 on --band */
+    --band-border: rgba(229, 233, 238, 0.14);
+
+    --border-strong: #647285;     /*  3.78:1 on --background */
+    --primary-hover: #a8cfe3;     /* 11.19:1 (= --chart-2) */
+    --success: #56ad84;           /*  6.79:1 (= --chart-4) */
+
+    /* Block flips to light, so the mark flips to the dark blue. */
+    --logo-block: #e5e9ee;        /* = --foreground */
+    --logo-mark: #1a6289;         /*  5.46:1 on --logo-block */
+    --logo-mark-on-light: #1a6289;
+
+    --shadow-color: #000000;
+    --shadow-opacity: 0.3;
+    --shadow-blur: 3px;
+    --shadow-spread: 0px;
+
+    --nav-bg: rgba(15, 20, 25, 0.88);
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.65;
+  letter-spacing: var(--letter-spacing);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* Instrument Serif ships a single weight (400) — do not ask for bolder. */
+h1, h2, h3, h4 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: -0.005em;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+a {
+  color: var(--primary);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+
+a:hover {
+  color: var(--primary-hover);
+}
+
+img,
+svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ── Primitives ───────────────────────────────────────────── */
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  padding-block: clamp(64px, 9vw, 112px);
+}
+
+.band-alt { background: var(--muted); }
+
+.band-deep {
+  background: var(--band);
+  color: var(--band-foreground);
+}
+
+.band-deep h1,
+.band-deep h2,
+.band-deep h3 { color: var(--band-foreground); }
+
+.band-deep a { color: var(--band-accent); }
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 14px;
+}
+
+.band-deep .eyebrow { color: var(--band-accent); }
+
+.prose {
+  max-width: var(--measure);
+  color: var(--muted-foreground);
+}
+
+.prose p + p { margin-top: 1.1em; }
+
+.prose h2 {
+  font-size: clamp(26px, 3vw, 32px);
+  color: var(--foreground);
+  margin-top: 2em;
+  margin-bottom: 0.5em;
+}
+
+.prose h3 {
+  font-size: 22px;
+  color: var(--foreground);
+  margin-top: 1.6em;
+  margin-bottom: 0.35em;
+}
+
+.prose ul { margin: 1em 0; padding-left: 1.2em; }
+.prose li { margin-bottom: 0.5em; }
+
+/* ── Buttons ──────────────────────────────────────────────── */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 11px 22px;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--dur) var(--ease),
+              border-color var(--dur) var(--ease),
+              color var(--dur) var(--ease);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+  color: var(--primary-foreground);
+}
+
+/* --border-strong, not --border: this outline IS the control's boundary. */
+.btn-secondary {
+  background: transparent;
+  color: var(--foreground);
+  border-color: var(--border-strong);
+}
+
+.btn-secondary:hover {
+  background: var(--accent);
+  color: var(--accent-foreground);
+  border-color: var(--border-strong);
+}
+
+.band-deep .btn-secondary {
+  color: var(--band-foreground);
+  border-color: var(--band-border);
+}
+
+.band-deep .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--band-foreground);
+  border-color: var(--band-muted);
+}
+
+/* ── Utility ──────────────────────────────────────────────── */
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background: var(--band);
+  color: var(--band-foreground);
+  padding: 12px 20px;
+  border-radius: 0 0 var(--radius-sm) 0;
+}
+
+.skip-link:focus {
+  left: 0;
+  color: var(--band-foreground);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,250 @@
+---
+import Base from '../layouts/Base.astro';
+import ProductCard from '../components/ProductCard.astro';
+import { products } from '../data/products';
+import { company } from '../data/company';
+---
+
+<Base
+  title="Software that protects people"
+  description="KCNEX Innovations builds consumer software that protects people online. Our first product, KinSentry, stops tech-support scams targeting older adults."
+>
+  <!-- 1. Hero -->
+  <section class="section hero">
+    <div class="container">
+      <p class="eyebrow">{company.name}</p>
+      <h1 class="hero-title">We build software that protects people.</h1>
+      <p class="hero-lede prose">
+        KCNEX is a small product company working on a narrow problem: the
+        everyday scams that cost ordinary people their savings. We ship tools
+        for the person being targeted — not for security experts.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#products">See what we build</a>
+        <a class="btn btn-secondary" href="/about">About the company</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Products grid -->
+  <section class="section band-alt" id="products">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Products</p>
+        <h2 class="section-title">What we build</h2>
+        <p class="prose">
+          Everything KCNEX ships is listed here — including what is still in
+          development. If it is not on this page, it does not exist yet.
+        </p>
+      </div>
+
+      <div class="product-grid" data-count={products.length}>
+        {products.map((product) => <ProductCard product={product} />)}
+
+        <article class="card-next">
+          <h3 class="next-title">More in development</h3>
+          <p class="next-body">
+            We are deliberate about what we ship. New products appear here when
+            they are real enough to try — not before.
+          </p>
+          <a class="next-link" href={`mailto:${company.email.general}`}>
+            Tell us what to build next
+          </a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Mission / principles -->
+  <section class="section band-deep">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">How we work</p>
+        <h2 class="section-title">Four commitments</h2>
+      </div>
+
+      <ol class="principles">
+        <li>
+          <span class="principle-num">01</span>
+          <h3 class="principle-title">Build for the person being targeted</h3>
+          <p class="principle-body">
+            Our users are often not the people who installed our software. If a
+            tool only works when the user is technical, careful, and
+            unhurried, it does not work.
+          </p>
+        </li>
+        <li>
+          <span class="principle-num">02</span>
+          <h3 class="principle-title">Collect as little as possible</h3>
+          <p class="principle-body">
+            Protective software sits in a privileged position. We treat that as
+            a reason to hold less data, not more, and we document exactly what
+            each product touches.
+          </p>
+        </li>
+        <li>
+          <span class="principle-num">03</span>
+          <h3 class="principle-title">Say only what is true</h3>
+          <p class="principle-body">
+            No invented user counts, no borrowed logos, no security theatre. A
+            claim on this site is one we can show you the basis for.
+          </p>
+        </li>
+        <li>
+          <span class="principle-num">04</span>
+          <h3 class="principle-title">Answer when something breaks</h3>
+          <p class="principle-body">
+            A real inbox, monitored by the people who wrote the code. Reports of
+            security issues get a response, not a form.
+          </p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 4. Contact CTA -->
+  <section class="section">
+    <div class="container cta">
+      <h2 class="cta-title">Working on something adjacent?</h2>
+      <p class="prose cta-body">
+        We are open to partnerships with consumer banks, elder-care
+        organisations, and anyone fighting the same problem from another angle.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="/contact">Get in touch</a>
+        <a class="btn btn-secondary" href="/security">Report a security issue</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    padding-block: clamp(72px, 11vw, 132px);
+  }
+
+  .hero-title {
+    font-size: clamp(40px, 7vw, 72px);
+    max-width: 16ch;
+    margin-bottom: 24px;
+  }
+
+  .hero-lede {
+    font-size: clamp(17px, 2vw, 20px);
+    margin-bottom: 34px;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .section-head {
+    margin-bottom: 44px;
+  }
+
+  .section-title {
+    font-size: clamp(30px, 4.4vw, 44px);
+    margin-bottom: 16px;
+  }
+
+  /* One real product shouldn't stretch to fill a 3-up grid and look padded. */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+    gap: 20px;
+    align-items: stretch;
+  }
+
+  .product-grid[data-count='1'] {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
+    max-width: 900px;
+  }
+
+  .card-next {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 28px;
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius-lg);
+    background: transparent;
+  }
+
+  .next-title {
+    font-size: 20px;
+    color: var(--muted-foreground);
+    margin-bottom: 10px;
+  }
+
+  .next-body {
+    font-size: 14.5px;
+    color: var(--muted-foreground);
+    margin-bottom: 16px;
+  }
+
+  .next-link {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--primary);
+    text-decoration: none;
+    align-self: flex-start;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .next-link:hover {
+    text-decoration: underline;
+  }
+
+  .principles {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: 36px 32px;
+    counter-reset: none;
+  }
+
+  .principle-num {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--band-accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 12px;
+  }
+
+  .principle-title {
+    font-size: 21px;
+    margin-bottom: 10px;
+  }
+
+  .principle-body {
+    font-size: 15px;
+    color: var(--band-muted);
+    line-height: 1.6;
+  }
+
+  .cta {
+    text-align: center;
+  }
+
+  .cta-title {
+    font-size: clamp(28px, 4vw, 40px);
+    margin-bottom: 14px;
+  }
+
+  .cta-body {
+    margin-inline: auto;
+    margin-bottom: 28px;
+  }
+
+  .cta .hero-actions {
+    justify-content: center;
+  }
+</style>

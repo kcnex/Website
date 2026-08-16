@@ -1,0 +1,166 @@
+---
+import { statusLabel, type Product } from '../data/products';
+
+interface Props {
+  product: Product;
+}
+
+const { product } = Astro.props;
+---
+
+<article class="card">
+  <div class="card-top">
+    <span class={`status status-${product.status}`}>
+      <span class="dot" aria-hidden="true"></span>
+      {statusLabel[product.status]}
+    </span>
+    <span class="platform">{product.platform}</span>
+  </div>
+
+  <h3 class="card-name">{product.name}</h3>
+  <p class="card-summary">{product.summary}</p>
+
+  <ul class="card-points">
+    {
+      product.points.map((point) => (
+        <li>
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+            <path
+              d="m5 13 4 4L19 7"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <span>{point}</span>
+        </li>
+      ))
+    }
+  </ul>
+
+  {
+    product.url && (
+      <a class="card-link" href={product.url}>
+        Visit {product.name}
+        <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+          <path
+            d="M7 17 17 7M9 7h8v8"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </a>
+    )
+  }
+</article>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    /* Colour/border only — no transform, so hovering never shifts layout. */
+    transition: border-color var(--dur) var(--ease),
+                box-shadow var(--dur) var(--ease);
+  }
+
+  .card:hover {
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  /* Status is never colour-only — the text label carries the meaning. */
+  .status-live { color: var(--success); }
+  .status-beta { color: var(--primary); }
+  .status-development { color: var(--muted-foreground); }
+
+  .platform {
+    font-size: 13px;
+    color: var(--muted-foreground);
+  }
+
+  .card-name {
+    font-size: 26px;
+    margin-bottom: 10px;
+  }
+
+  .card-summary {
+    font-size: 15px;
+    color: var(--muted-foreground);
+    margin-bottom: 20px;
+  }
+
+  .card-points {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  .card-points li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14.5px;
+    color: var(--muted-foreground);
+    line-height: 1.5;
+  }
+
+  .card-points svg {
+    color: var(--success);
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+
+  .card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    margin-top: auto;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--primary);
+    text-decoration: none;
+  }
+
+  .card-link:hover {
+    color: var(--primary-hover);
+    text-decoration: underline;
+  }
+</style>

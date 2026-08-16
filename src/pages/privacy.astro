@@ -1,0 +1,141 @@
+---
+import Base from '../layouts/Base.astro';
+import { company } from '../data/company';
+
+/*
+ * This describes THIS WEBSITE only — a static, analytics-free brochure site.
+ * That is what makes it short and true. Each product keeps its own policy
+ * covering what that product collects (KinSentry's lives on kinsentry.com).
+ *
+ * TODO(kcnex): have a lawyer review before launch, and re-check the "no
+ * cookies / no analytics" claims if anything is ever added to this site.
+ * If you add analytics, this page MUST change on the same day.
+ */
+
+const updated = 'TODO: date of last review';
+---
+
+<Base
+  title="Privacy Policy"
+  description="The KCNEX Innovations website privacy policy — what this site collects, which is almost nothing."
+>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">Legal</p>
+      <h1 class="page-title">Privacy Policy</h1>
+      <p class="updated">Last updated: {updated}</p>
+
+      <div class="prose body">
+        <div class="callout">
+          <p>
+            <strong>This policy covers this website only.</strong> Our products
+            each have their own privacy policy describing what that product
+            collects. For KinSentry, see the
+            <a href="https://kinsentry.com/privacy.html">KinSentry privacy policy</a>.
+          </p>
+        </div>
+
+        <h2>The short version</h2>
+        <p>
+          This website is a set of static pages. It has no accounts, no
+          comment fields, and no tracking. We do not set cookies, we do not run
+          analytics, and we do not build a profile of you for visiting.
+        </p>
+
+        <h2>What we collect here</h2>
+        <p>
+          Nothing that identifies you, by design. There is no form on this site
+          that sends data to us — the contact page lists email addresses and
+          leaves the choice to write to us entirely with you.
+        </p>
+
+        <h3>Server logs</h3>
+        <p>
+          Our hosting provider keeps standard access logs (IP address, browser
+          user-agent, requested page, timestamp) as an ordinary part of serving
+          the site and defending it from abuse. We do not use those logs to
+          identify individuals or to market to you.
+        </p>
+        <!-- TODO(kcnex): name the actual host and its retention period once
+             hosting is chosen, and link that host's own privacy policy. -->
+
+        <h3>Fonts</h3>
+        <p>
+          This site loads typefaces from Google Fonts, which means your browser
+          makes a request to Google's servers and Google receives your IP
+          address as part of that request. If you would rather that did not
+          happen, the fonts can be self-hosted — tell us and we will move them.
+        </p>
+        <!-- TODO(kcnex): self-hosting the three fonts removes this disclosure
+             entirely and is a genuine privacy improvement. Worth doing. -->
+
+        <h2>If you email us</h2>
+        <p>
+          When you write to an address listed on this site, we receive whatever
+          you put in the message, along with your email address. We use it to
+          answer you. We do not add you to a mailing list, and we do not sell or
+          share it.
+        </p>
+
+        <h2>Your rights</h2>
+        <p>
+          Depending on where you live, you may have the right to ask what
+          personal data we hold about you, to have it corrected, or to have it
+          deleted. Because this site collects essentially nothing, the answer is
+          usually "only the emails you have sent us". To ask, or to have that
+          correspondence deleted, write to
+          <a href={`mailto:${company.email.general}`}>{company.email.general}</a>.
+        </p>
+        <!-- TODO(kcnex): if you serve UK/EU users, confirm with counsel whether
+             a named data controller and a GDPR lawful-basis statement are
+             required here, and add them if so. -->
+
+        <h2>Children</h2>
+        <p>
+          This site is not directed at children and we do not knowingly collect
+          information from them.
+        </p>
+
+        <h2>Changes</h2>
+        <p>
+          If we change this policy we will update the date at the top of the
+          page. If a change is significant — for example, if we ever add
+          analytics — we will say so plainly rather than quietly editing it in.
+        </p>
+
+        <h2>Contact</h2>
+        <p>
+          Questions about this policy go to
+          <a href={`mailto:${company.email.general}`}>{company.email.general}</a>,
+          or by post to {company.legalEntity}.
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-title {
+    font-size: clamp(36px, 6vw, 56px);
+    margin-bottom: 10px;
+  }
+
+  .updated {
+    font-size: 14px;
+    color: var(--muted-foreground);
+    margin-bottom: 28px;
+  }
+
+  .callout {
+    padding: 20px 22px;
+    background: var(--card);
+    border-left: 3px solid var(--primary);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    margin-bottom: 8px;
+  }
+
+  .callout p {
+    margin: 0;
+    font-size: 15px;
+  }
+</style>

@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="Page not found"
+  description="That page does not exist on the KCNEX Innovations website."
+>
+  <section class="section notfound">
+    <div class="container">
+      <p class="eyebrow">404</p>
+      <h1 class="nf-title">That page isn't here</h1>
+      <p class="prose nf-body">
+        The link may be out of date, or we may have moved something. Neither is
+        your fault.
+      </p>
+      <div class="nf-actions">
+        <a class="btn btn-primary" href="/">Back to home</a>
+        <a class="btn btn-secondary" href="/contact">Tell us about the link</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .notfound {
+    padding-block: clamp(80px, 12vw, 140px);
+  }
+
+  .nf-title {
+    font-size: clamp(36px, 6vw, 60px);
+    margin-bottom: 16px;
+  }
+
+  .nf-body {
+    margin-bottom: 28px;
+  }
+
+  .nf-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+</style>
