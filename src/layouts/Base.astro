@@ -38,7 +38,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@500;600;700&display=swap"
       rel="stylesheet"
     />
 
@@ -63,5 +63,47 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
       <slot />
     </main>
     <Footer />
+
+    <script>
+      // Shared depth FX for every page: scroll-reveal + pointer tilt.
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const reveals = document.querySelectorAll<HTMLElement>('[data-reveal]');
+      if (reduce || !('IntersectionObserver' in window)) {
+        reveals.forEach((el) => el.classList.add('in'));
+      } else {
+        const io = new IntersectionObserver(
+          (entries, obs) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                e.target.classList.add('in');
+                obs.unobserve(e.target);
+              }
+            });
+          },
+          { threshold: 0.14, rootMargin: '0px 0px -8% 0px' }
+        );
+        reveals.forEach((el) => io.observe(el));
+      }
+
+      const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+      if (fine && !reduce) {
+        document.querySelectorAll<HTMLElement>('[data-tilt]').forEach((card) => {
+          const MAX = 7;
+          card.addEventListener('pointermove', (e) => {
+            const r = card.getBoundingClientRect();
+            const px = (e.clientX - r.left) / r.width - 0.5;
+            const py = (e.clientY - r.top) / r.height - 0.5;
+            card.style.setProperty('--ry', `${px * MAX}deg`);
+            card.style.setProperty('--rx', `${-py * MAX}deg`);
+            card.style.setProperty('--mx', `${(px + 0.5) * 100}%`);
+            card.style.setProperty('--my', `${(py + 0.5) * 100}%`);
+          });
+          card.addEventListener('pointerleave', () => {
+            card.style.setProperty('--ry', '0deg');
+            card.style.setProperty('--rx', '0deg');
+          });
+        });
+      }
+    </script>
   </body>
 </html>

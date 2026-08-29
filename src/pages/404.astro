@@ -1,22 +1,25 @@
 ---
 import Base from '../layouts/Base.astro';
+import Hero3D from '../components/Hero3D.astro';
 ---
 
 <Base
+  heroNav
   title="Page not found"
   description="That page does not exist on the KCNEX Innovations website."
 >
   <section class="section notfound">
-    <div class="container">
-      <p class="eyebrow">404</p>
-      <h1 class="nf-title">That page isn't here</h1>
-      <p class="prose nf-body">
+    <Hero3D />
+    <div class="container nf-inner">
+      <p class="nf-eyebrow" data-reveal>Error 404</p>
+      <h1 class="nf-title" data-reveal>That page isn't here</h1>
+      <p class="nf-body" data-reveal>
         The link may be out of date, or we may have moved something. Neither is
         your fault.
       </p>
-      <div class="nf-actions">
-        <a class="btn btn-primary" href="/">Back to home</a>
-        <a class="btn btn-secondary" href="/contact">Tell us about the link</a>
+      <div class="nf-actions" data-reveal>
+        <a class="btn btn-primary btn-glow" href="/">Back to home</a>
+        <a class="btn btn-ghost" href="/contact">Tell us about the link</a>
       </div>
     </div>
   </section>
@@ -24,21 +27,63 @@ import Base from '../layouts/Base.astro';
 
 <style>
   .notfound {
-    padding-block: clamp(80px, 12vw, 140px);
+    position: relative;
+    isolation: isolate;
+    margin-top: calc(-1 * var(--nav-h));
+    min-height: 100svh;
+    display: grid;
+    align-items: center;
+    padding-block: calc(var(--nav-h) + 6vh) 10vh;
+    overflow: hidden;
+  }
+
+  .nf-inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  .nf-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--hero-accent);
+    margin-bottom: 14px;
   }
 
   .nf-title {
-    font-size: clamp(36px, 6vw, 60px);
-    margin-bottom: 16px;
+    color: var(--hero-fg);
+    font-size: clamp(40px, 8vw, 88px);
+    line-height: 1.03;
+    margin-bottom: 18px;
+    text-shadow: 0 2px 40px rgba(0, 0, 0, 0.4);
   }
 
   .nf-body {
-    margin-bottom: 28px;
+    color: var(--hero-muted);
+    font-size: clamp(17px, 2vw, 21px);
+    max-width: 52ch;
+    margin-bottom: 32px;
   }
 
   .nf-actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 14px;
   }
+
+  /* Ghost + glow buttons for the dark stage (mirrors the homepage hero). */
+  .btn-ghost {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--hero-fg);
+    border-color: var(--hero-border);
+    backdrop-filter: blur(6px);
+  }
+  .btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--hero-fg);
+    border-color: rgba(245, 246, 248, 0.4);
+  }
+  .btn-glow { box-shadow: 0 8px 30px -6px var(--glow-strong); }
 </style>

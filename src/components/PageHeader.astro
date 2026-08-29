@@ -1,0 +1,70 @@
+---
+/*
+ * PageHeader — the immersive 3D header shared by every inner page.
+ *
+ * Reuses the same WebGL scene as the homepage (Hero3D), but in a shorter
+ * "stage" band with the page title over it, so the whole site — not just the
+ * home page — reads as 3D. Falls back exactly like Hero3D does.
+ */
+import Hero3D from './Hero3D.astro';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  lede?: string;
+}
+const { eyebrow, title, lede } = Astro.props;
+---
+
+<section class="page-hero">
+  <Hero3D />
+  <div class="container page-hero__inner">
+    <p class="page-hero__eyebrow" data-reveal>{eyebrow}</p>
+    <h1 class="page-hero__title" data-reveal>{title}</h1>
+    {lede && <p class="page-hero__lede" data-reveal>{lede}</p>}
+  </div>
+</section>
+
+<style>
+  .page-hero {
+    position: relative;
+    isolation: isolate;
+    margin-top: calc(-1 * var(--nav-h));
+    padding-block: calc(var(--nav-h) + 11vh) 9vh;
+    min-height: 56svh;
+    display: grid;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .page-hero__inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  .page-hero__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--hero-accent);
+    margin-bottom: 14px;
+  }
+
+  .page-hero__title {
+    color: var(--hero-fg);
+    font-size: clamp(40px, 7vw, 76px);
+    line-height: 1.04;
+    max-width: 20ch;
+    margin-bottom: 18px;
+    text-shadow: 0 2px 40px rgba(0, 0, 0, 0.4);
+  }
+
+  .page-hero__lede {
+    color: var(--hero-muted);
+    font-size: clamp(17px, 2vw, 21px);
+    max-width: 62ch;
+    line-height: 1.6;
+  }
+</style>

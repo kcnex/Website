@@ -202,65 +202,7 @@ const pipeline = [
   </section>
 </Base>
 
-<script>
-  // Scroll-reveal: fade/rise elements as they enter. Respects reduced motion.
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const items = document.querySelectorAll<HTMLElement>('[data-reveal]');
-  if (reduce || !('IntersectionObserver' in window)) {
-    items.forEach((el) => el.classList.add('in'));
-  } else {
-    const io = new IntersectionObserver(
-      (entries, obs) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            e.target.classList.add('in');
-            obs.unobserve(e.target);
-          }
-        });
-      },
-      { threshold: 0.14, rootMargin: '0px 0px -8% 0px' }
-    );
-    items.forEach((el) => io.observe(el));
-  }
-
-  // Pointer tilt for depth cards — precise pointers only, motion allowed only.
-  const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-  if (fine && !reduce) {
-    document.querySelectorAll<HTMLElement>('[data-tilt]').forEach((card) => {
-      const MAX = 7;
-      card.addEventListener('pointermove', (e) => {
-        const r = card.getBoundingClientRect();
-        const px = (e.clientX - r.left) / r.width - 0.5;
-        const py = (e.clientY - r.top) / r.height - 0.5;
-        card.style.setProperty('--ry', `${px * MAX}deg`);
-        card.style.setProperty('--rx', `${-py * MAX}deg`);
-        card.style.setProperty('--mx', `${(px + 0.5) * 100}%`);
-        card.style.setProperty('--my', `${(py + 0.5) * 100}%`);
-      });
-      card.addEventListener('pointerleave', () => {
-        card.style.setProperty('--ry', '0deg');
-        card.style.setProperty('--rx', '0deg');
-      });
-    });
-  }
-</script>
-
 <style>
-  /* ── Reveal primitive ─────────────────────────────────────── */
-  [data-reveal] {
-    opacity: 0;
-    transform: translateY(26px);
-    transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
-    will-change: opacity, transform;
-  }
-  [data-reveal].in {
-    opacity: 1;
-    transform: none;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    [data-reveal] { opacity: 1; transform: none; transition: none; }
-  }
-
   /* ── 1. Hero ──────────────────────────────────────────────── */
   .hero {
     position: relative;

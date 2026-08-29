@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
 import { company } from '../data/company';
 
 /*
@@ -15,14 +16,9 @@ const channels = [
     note: 'Project enquiries and estimates, partnerships, press.',
   },
   {
-    label: 'KinSentry support',
-    email: company.kinsentryEmail.general,
-    note: 'Help with the extension, billing, or your account.',
-  },
-  {
-    label: 'Report a scam',
-    email: company.kinsentryEmail.report,
-    note: 'Send us a scam number or site and we will look at it.',
+    label: 'General enquiries',
+    email: company.email.contact,
+    note: 'Anything else — questions, feedback, or just to say hello.',
   },
   {
     label: 'Security disclosure',
@@ -33,23 +29,23 @@ const channels = [
 ---
 
 <Base
+  heroNav
   title="Contact"
-  description="Get in touch with KCNEX Innovations — project enquiries, partnerships, product support, scam reports, and security disclosure."
+  description="Get in touch with KCNEX Innovations — project enquiries, partnerships, product support, and security disclosure."
 >
+  <PageHeader
+    eyebrow="Contact"
+    title="Talk to a person"
+    lede="Every address below reaches the people who build the software. Pick whichever fits — we would rather you send it to the wrong one than not send it."
+  />
+
   <section class="section">
     <div class="container">
-      <p class="eyebrow">Contact</p>
-      <h1 class="page-title">Talk to a person</h1>
-      <p class="prose lede">
-        Every address below reaches the people who build the software. Pick
-        whichever fits — we would rather you send it to the wrong one than not
-        send it.
-      </p>
-
       <ul class="channels">
         {
           channels.map((channel) => (
-            <li class="channel">
+            <li class="channel" data-reveal data-tilt>
+              <div class="channel__glow" aria-hidden="true" />
               <h2 class="channel-label">{channel.label}</h2>
               <a class="channel-email" href={`mailto:${channel.email}`}>
                 {channel.email}
@@ -60,7 +56,7 @@ const channels = [
         }
       </ul>
 
-      <div class="detail-block">
+      <div class="detail-block" data-reveal>
         <h2 class="detail-title">Company details</h2>
         <dl class="details">
           <div>
@@ -90,55 +86,63 @@ const channels = [
 </Base>
 
 <style>
-  .page-title {
-    font-size: clamp(36px, 6vw, 60px);
-    margin-bottom: 20px;
-  }
-
-  .lede {
-    font-size: clamp(17px, 2vw, 20px);
-  }
-
   .channels {
     list-style: none;
     padding: 0;
-    margin: 44px 0 0;
+    margin: 0;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
     gap: 20px;
   }
 
   .channel {
+    position: relative;
+    overflow: hidden;
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
-    padding: 24px;
+    padding: 26px;
+  }
+  .channel:hover {
+    border-color: var(--primary);
+    box-shadow: var(--depth-shadow-hover);
   }
 
+  .channel__glow {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    background: radial-gradient(
+      220px circle at var(--mx, 50%) var(--my, 0%),
+      var(--glow), transparent 70%
+    );
+    transition: opacity var(--dur) var(--ease);
+    pointer-events: none;
+  }
+  .channel:hover .channel__glow { opacity: 1; }
+
   .channel-label {
-    font-family: var(--font-sans);
+    font-family: var(--font-mono);
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--muted-foreground);
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
 
   .channel-email {
     display: inline-flex;
     align-items: center;
     min-height: 32px;
-    font-family: var(--font-serif);
-    font-size: 20px;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 19px;
     color: var(--primary);
     text-decoration: none;
     word-break: break-word;
   }
-
-  .channel-email:hover {
-    text-decoration: underline;
-  }
+  .channel-email:hover { text-decoration: underline; }
 
   .channel-note {
     margin-top: 8px;
@@ -147,9 +151,13 @@ const channels = [
   }
 
   .detail-block {
-    margin-top: 48px;
-    padding-top: 32px;
-    border-top: 1px solid var(--border);
+    margin-top: 40px;
+    padding: 30px;
+    border-radius: var(--radius-lg);
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(12px);
+    box-shadow: var(--depth-shadow);
   }
 
   .detail-title {
