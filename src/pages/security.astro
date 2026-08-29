@@ -1,23 +1,24 @@
 ---
 import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
 import { company } from '../data/company';
 ---
 
 <Base
+  heroNav
   title="Security"
   description="How to report a security vulnerability to KCNEX Innovations, what we commit to, and our responsible disclosure policy."
 >
-  <section class="section">
-    <div class="container">
-      <p class="eyebrow">Security</p>
-      <h1 class="page-title">Responsible disclosure</h1>
-      <p class="prose lede">
-        We build software for a living, so we take reports about our own
-        security seriously. If you have found a vulnerability in a KCNEX
-        product or a site we run, we want to hear from you.
-      </p>
+  <PageHeader
+    eyebrow="Security"
+    title="Responsible disclosure"
+    lede="We build software for a living, so we take reports about our own security seriously. If you have found a vulnerability in a KCNEX product or a site we run, we want to hear from you."
+  />
 
-      <div class="report-box">
+  <section class="section">
+    <div class="container sec-body">
+      <div class="report-box" data-reveal>
+        <div class="report-box__glow" aria-hidden="true"></div>
         <h2 class="report-title">Report a vulnerability</h2>
         <a class="report-email" href={`mailto:${company.email.security}`}>
           {company.email.security}
@@ -28,45 +29,28 @@ import { company } from '../data/company';
         </p>
       </div>
 
-      <div class="prose body">
+      <div class="prose block" data-reveal>
         <h2>What we commit to</h2>
         <ul>
           <li>We will acknowledge your report within five working days.</li>
-          <li>
-            We will tell you honestly whether we consider it a vulnerability,
-            and why.
-          </li>
-          <li>
-            We will keep you updated while we work on a fix, and tell you when
-            it ships.
-          </li>
-          <li>
-            We will credit you publicly if you want the credit, and stay quiet
-            about you if you do not.
-          </li>
-          <li>
-            We will not pursue legal action against researchers who follow the
-            guidelines below.
-          </li>
+          <li>We will tell you honestly whether we consider it a vulnerability, and why.</li>
+          <li>We will keep you updated while we work on a fix, and tell you when it ships.</li>
+          <li>We will credit you publicly if you want the credit, and stay quiet about you if you do not.</li>
+          <li>We will not pursue legal action against researchers who follow the guidelines below.</li>
         </ul>
+      </div>
 
+      <div class="prose block" data-reveal>
         <h2>What we ask of you</h2>
         <ul>
-          <li>
-            Give us a reasonable window to fix the issue before disclosing it
-            publicly.
-          </li>
-          <li>
-            Do not access, modify, or delete data belonging to anyone else. If
-            you encounter user data, stop and tell us.
-          </li>
-          <li>
-            Do not run denial-of-service tests, send spam, or use social
-            engineering against our team or our users.
-          </li>
+          <li>Give us a reasonable window to fix the issue before disclosing it publicly.</li>
+          <li>Do not access, modify, or delete data belonging to anyone else. If you encounter user data, stop and tell us.</li>
+          <li>Do not run denial-of-service tests, send spam, or use social engineering against our team or our users.</li>
           <li>Test only against your own accounts and installations.</li>
         </ul>
+      </div>
 
+      <div class="prose block" data-reveal>
         <h2>Scope</h2>
         <p>
           Every product listed on our <a href="/#products">products page</a> is
@@ -96,44 +80,49 @@ import { company } from '../data/company';
 </Base>
 
 <style>
-  .page-title {
-    font-size: clamp(36px, 6vw, 60px);
-    margin-bottom: 20px;
-  }
-
-  .lede {
-    font-size: clamp(17px, 2vw, 20px);
+  .sec-body {
+    max-width: 760px;
   }
 
   .report-box {
-    margin: 40px 0 8px;
-    padding: 28px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 12px;
+    padding: 30px;
     background: var(--accent);
     border: 1px solid rgba(194, 65, 12, 0.22);
     border-radius: var(--radius-lg);
+    box-shadow: var(--depth-shadow);
   }
+  .report-box__glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(70% 90% at 15% -20%, var(--glow), transparent 60%);
+    pointer-events: none;
+  }
+  .report-box > * { position: relative; }
 
   .report-title {
-    font-family: var(--font-sans);
+    font-family: var(--font-mono);
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--primary);
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
 
   .report-email {
     display: inline-flex;
     align-items: center;
     min-height: 40px;
-    font-family: var(--font-serif);
+    font-family: var(--font-display);
+    font-weight: 600;
     font-size: clamp(22px, 3vw, 30px);
     color: var(--foreground);
     text-decoration: none;
     word-break: break-word;
   }
-
   .report-email:hover {
     color: var(--primary);
     text-decoration: underline;
@@ -144,5 +133,11 @@ import { company } from '../data/company';
     font-size: 15px;
     color: var(--muted-foreground);
     max-width: var(--measure);
+  }
+
+  .block + .block { margin-top: 4px; }
+  .block h2 {
+    font-size: clamp(22px, 3vw, 30px);
+    margin-top: 1.4em;
   }
 </style>

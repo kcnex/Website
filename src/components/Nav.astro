@@ -2,10 +2,16 @@
 import Logo from './Logo.astro';
 import { company, navLinks } from '../data/company';
 
+interface Props {
+  /* When true, the nav floats transparent over a dark hero and goes solid on
+     scroll. Set on pages whose first section is the dark 3D stage. */
+  heroNav?: boolean;
+}
+const { heroNav = false } = Astro.props;
 const path = Astro.url.pathname;
 ---
 
-<header class="nav">
+<header class="nav" data-hero={heroNav ? '' : undefined}>
   <div class="container nav-inner">
     <a href="/" class="brand" aria-label={`${company.name} — home`}>
       <Logo size={28} />
@@ -34,6 +40,16 @@ const path = Astro.url.pathname;
   </div>
 </header>
 
+<script>
+  // Solidify the hero nav once the page scrolls off the top.
+  const nav = document.querySelector<HTMLElement>('.nav[data-hero]');
+  if (nav) {
+    const onScroll = () => nav.classList.toggle('is-scrolled', window.scrollY > 12);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+</script>
+
 <style>
   .nav {
     position: sticky;
@@ -42,6 +58,29 @@ const path = Astro.url.pathname;
     background: var(--nav-bg);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border);
+    transition: background-color var(--dur) var(--ease),
+                border-color var(--dur) var(--ease);
+  }
+
+  /* Over the dark 3D hero: float transparent with light text until scrolled. */
+  .nav[data-hero]:not(.is-scrolled) {
+    background: transparent;
+    border-bottom-color: transparent;
+    backdrop-filter: none;
+  }
+  .nav[data-hero]:not(.is-scrolled) .brand { color: var(--hero-fg); }
+  .nav[data-hero]:not(.is-scrolled) .brand-suffix { color: var(--hero-muted); }
+  .nav[data-hero]:not(.is-scrolled) .nav-links a { color: var(--hero-muted); }
+  .nav[data-hero]:not(.is-scrolled) .nav-links a:hover {
+    color: var(--hero-fg);
+    background: rgba(255, 255, 255, 0.1);
+  }
+  .nav[data-hero]:not(.is-scrolled) .nav-links a[aria-current='page'] {
+    color: var(--hero-accent);
+  }
+  /* The Logo ink is white over the dark hero. */
+  .nav[data-hero]:not(.is-scrolled) :global(svg path:first-child) {
+    fill: var(--hero-fg);
   }
 
   .nav-inner {
@@ -76,7 +115,7 @@ const path = Astro.url.pathname;
   }
 
   .brand-suffix {
-    font-family: var(--font-serif);
+    font-family: var(--font-sans);
     font-size: 15px;
     font-style: italic;
     color: var(--muted-foreground);

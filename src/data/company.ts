@@ -30,6 +30,7 @@ export const company = {
     // TODO(kcnex): create these on the kcnex domain, or point them at the
     // kinsentry.com inboxes that already exist and are monitored.
     general: 'hello@kcnex.com',
+    contact: 'contact@kcnex.com',
     security: 'security@kcnex.com',
     press: 'press@kcnex.com',
   },

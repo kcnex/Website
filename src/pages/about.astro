@@ -1,27 +1,23 @@
 ---
 import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
 import { company } from '../data/company';
 ---
 
 <Base
+  heroNav
   title="About"
   description="KCNEX Innovations is a software development studio offering software and app development, web design and development, DevOps, and digital marketing. Built in India, serving the US, UK, and Canada."
 >
+  <PageHeader
+    eyebrow="About"
+    title="A studio that ships end to end"
+    lede="We design and build software, apps, and websites; we run the DevOps that keeps them shipping; and we do the digital marketing that gets them in front of customers. Develop, deploy, grow — one team, the whole way."
+  />
+
   <section class="section">
-    <div class="container">
-      <p class="eyebrow">About</p>
-      <h1 class="page-title">A studio that ships end to end</h1>
-
-      <div class="prose lede">
-        <p>
-          KCNEX Innovations is a software development studio. We design and
-          build software, apps, and websites; we run the DevOps that keeps them
-          shipping; and we do the digital marketing that gets them in front of
-          customers. Develop, deploy, grow — one team, the whole way.
-        </p>
-      </div>
-
-      <div class="prose body">
+    <div class="container about-body">
+      <div class="prose block" data-reveal>
         <h2>Where the method comes from</h2>
         <p>
           Before KCNEX took on client work, we built our own product. It
@@ -38,7 +34,9 @@ import { company } from '../data/company';
           people who needed it. That end-to-end discipline is the method we now
           offer to clients.
         </p>
+      </div>
 
+      <div class="prose block" data-reveal>
         <h2>What we do</h2>
         <p>
           Four service lines: software and app development, website and web app
@@ -46,7 +44,9 @@ import { company } from '../data/company';
           engagements combine at least two — the product we build is usually
           the product we deploy, and often the product we help grow.
         </p>
+      </div>
 
+      <div class="prose block" data-reveal>
         <h2>What we are, honestly</h2>
         <p>
           We are a small team, not an enterprise. We are built in {company.builtIn},
@@ -59,7 +59,9 @@ import { company } from '../data/company';
           our own shipped product. Client work and future products will each
           stand on their own, and each will be listed on this site.
         </p>
+      </div>
 
+      <div class="prose block" data-reveal>
         <h2>How we think about trust</h2>
         <p>
           Clients hand us their codebases, their infrastructure, and sometimes
@@ -78,19 +80,16 @@ import { company } from '../data/company';
 </Base>
 
 <style>
-  .page-title {
-    font-size: clamp(36px, 6vw, 60px);
-    max-width: 18ch;
-    margin-bottom: 24px;
+  .about-body {
+    max-width: 760px;
   }
 
-  .lede {
-    font-size: clamp(17px, 2vw, 20px);
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .body {
+  .block + .block {
     margin-top: 8px;
+  }
+
+  .block h2 {
+    font-size: clamp(24px, 3vw, 32px);
+    margin-top: 1.4em;
   }
 </style>
