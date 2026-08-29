@@ -1,0 +1,299 @@
+---
+/*
+ * Hero3D — the immersive WebGL centerpiece for the homepage.
+ *
+ * Renders three extruded KCNEX chevrons (two metallic "ink" + one glowing
+ * orange accent) floating in a lit, foggy scene over a drifting particle
+ * field. Camera parallaxes to the cursor and dollies as the hero scrolls by.
+ *
+ * Progressive enhancement, in order of fallback:
+ *   1. No JS / JS fails      → CSS gradient backdrop (rendered below the canvas)
+ *   2. No WebGL              → canvas stays hidden, gradient shows
+ *   3. prefers-reduced-motion→ one static, composed frame; no animation loop
+ *   4. Full support          → the animated scene, paused when tab/section hidden
+ *
+ * The scene is purely decorative (aria-hidden). All real content is HTML
+ * layered above it in index.astro, and remains legible on the dark backdrop
+ * in both light and dark modes.
+ */
+---
+
+<div class="hero3d" aria-hidden="true">
+  <div class="hero3d__backdrop"></div>
+  <canvas class="hero3d__canvas" data-hero3d></canvas>
+  <div class="hero3d__grain"></div>
+  <div class="hero3d__vignette"></div>
+</div>
+
+<script>
+  import * as THREE from 'three';
+
+  const canvas = document.querySelector<HTMLCanvasElement>('[data-hero3d]');
+  if (canvas) init(canvas);
+
+  function init(canvas: HTMLCanvasElement) {
+    const host = canvas.parentElement as HTMLElement;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // --- Renderer (bail cleanly to the CSS backdrop if WebGL is unavailable) ---
+    let renderer: THREE.WebGLRenderer;
+    try {
+      renderer = new THREE.WebGLRenderer({
+        canvas,
+        antialias: true,
+        alpha: true,
+        powerPreference: 'high-performance',
+      });
+    } catch {
+      return; // backdrop already visible
+    }
+    renderer.setClearColor(0x000000, 0);
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.15;
+
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x0b0b0e, 0.055);
+
+    const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
+    camera.position.set(0, 0, 13);
+
+    // --- Chevron geometry: a bold right-pointing ">" with a beveled extrude ---
+    const chevronShape = (() => {
+      const s = new THREE.Shape();
+      s.moveTo(-0.95, 0.62);
+      s.lineTo(0.52, 0.0);
+      s.lineTo(-0.95, -0.62);
+      s.lineTo(-0.45, -0.62);
+      s.lineTo(0.08, 0.0);
+      s.lineTo(-0.45, 0.62);
+      s.closePath();
+      return s;
+    })();
+    const chevronGeo = new THREE.ExtrudeGeometry(chevronShape, {
+      depth: 0.34,
+      bevelEnabled: true,
+      bevelThickness: 0.09,
+      bevelSize: 0.07,
+      bevelSegments: 4,
+      steps: 1,
+    });
+    chevronGeo.center();
+
+    const inkMat = new THREE.MeshStandardMaterial({
+      color: 0x20222a,
+      metalness: 0.92,
+      roughness: 0.28,
+    });
+    const accentMat = new THREE.MeshStandardMaterial({
+      color: 0xfa5d13,
+      metalness: 0.55,
+      roughness: 0.25,
+      emissive: 0xfa5d13,
+      emissiveIntensity: 0.55,
+    });
+
+    // Three staggered chevrons, marching forward — the KCNEX mark in space.
+    const group = new THREE.Group();
+    const chevrons: { mesh: THREE.Mesh; phase: number; amp: number }[] = [];
+    const layout = [
+      { x: -2.7, y: 0.5, z: -1.4, s: 1.0, mat: inkMat },
+      { x: -0.1, y: -0.15, z: 0.2, s: 1.28, mat: inkMat },
+      { x: 2.7, y: 0.35, z: 1.1, s: 1.0, mat: accentMat },
+    ];
+    layout.forEach((l, i) => {
+      const mesh = new THREE.Mesh(chevronGeo, l.mat);
+      mesh.position.set(l.x, l.y, l.z);
+      mesh.scale.setScalar(l.s);
+      group.add(mesh);
+      chevrons.push({ mesh, phase: i * 1.9, amp: 0.18 + i * 0.04 });
+    });
+    group.rotation.x = -0.12;
+    scene.add(group);
+
+    // --- Lighting: cool key + warm brand rim + a glowing point by the accent ---
+    scene.add(new THREE.AmbientLight(0x6a7690, 0.55));
+    const key = new THREE.DirectionalLight(0xdfe6ff, 1.7);
+    key.position.set(-4, 5, 6);
+    scene.add(key);
+    const warm = new THREE.DirectionalLight(0xff7a2a, 1.5);
+    warm.position.set(6, -2, 3);
+    scene.add(warm);
+    const glow = new THREE.PointLight(0xfa5d13, 2.6, 16, 2);
+    glow.position.set(3.1, 0.4, 3);
+    scene.add(glow);
+
+    // --- Particle field: two tones, drifting slowly for parallax depth ---
+    const COUNT = reduceMotion ? 260 : 620;
+    const pos = new Float32Array(COUNT * 3);
+    const col = new Float32Array(COUNT * 3);
+    const cA = new THREE.Color(0xffb489);
+    const cB = new THREE.Color(0x9aa6c4);
+    for (let i = 0; i < COUNT; i++) {
+      pos[i * 3] = (Math.random() - 0.5) * 26;
+      pos[i * 3 + 1] = (Math.random() - 0.5) * 16;
+      pos[i * 3 + 2] = (Math.random() - 0.5) * 16 - 2;
+      const c = Math.random() < 0.32 ? cA : cB;
+      col[i * 3] = c.r; col[i * 3 + 1] = c.g; col[i * 3 + 2] = c.b;
+    }
+    const pGeo = new THREE.BufferGeometry();
+    pGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    pGeo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+    const points = new THREE.Points(
+      pGeo,
+      new THREE.PointsMaterial({
+        size: 0.06,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.85,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+      })
+    );
+    scene.add(points);
+
+    // --- Sizing (DPR capped for perf) ---
+    function resize() {
+      const w = host.clientWidth || 1;
+      const h = host.clientHeight || 1;
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+    resize();
+    const ro = new ResizeObserver(resize);
+    ro.observe(host);
+
+    // --- Interaction targets ---
+    const mouse = { x: 0, y: 0, tx: 0, ty: 0 };
+    function onPointer(e: PointerEvent) {
+      const r = host.getBoundingClientRect();
+      mouse.tx = ((e.clientX - r.left) / r.width - 0.5) * 2;
+      mouse.ty = ((e.clientY - r.top) / r.height - 0.5) * 2;
+    }
+    window.addEventListener('pointermove', onPointer, { passive: true });
+
+    let scrollN = 0; // 0 at top of hero → 1 when scrolled one hero-height
+    function onScroll() {
+      const h = host.clientHeight || 1;
+      scrollN = Math.min(Math.max(window.scrollY / h, 0), 1);
+    }
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    // --- Render loop, paused when hidden ---
+    let running = true;
+    let raf = 0;
+    const clock = new THREE.Clock();
+
+    function renderFrame(t: number) {
+      // Chevrons bob + turn gently.
+      chevrons.forEach((c) => {
+        c.mesh.rotation.y = Math.sin(t * 0.5 + c.phase) * 0.5 + t * 0.12;
+        c.mesh.rotation.z = Math.cos(t * 0.4 + c.phase) * 0.08;
+        c.mesh.position.y += Math.sin(t * 0.9 + c.phase) * c.amp * 0.01;
+      });
+      points.rotation.y = t * 0.02;
+
+      // Ease camera toward cursor; dolly + rise as the hero scrolls away.
+      mouse.x += (mouse.tx - mouse.x) * 0.05;
+      mouse.y += (mouse.ty - mouse.y) * 0.05;
+      camera.position.x = mouse.x * 1.6;
+      camera.position.y = -mouse.y * 1.0 + scrollN * 2.2;
+      camera.position.z = 13 + scrollN * 6;
+      group.rotation.y = mouse.x * 0.18 + scrollN * 0.5;
+      group.rotation.x = -0.12 - scrollN * 0.25;
+      group.position.y = scrollN * 1.2;
+      camera.lookAt(0, scrollN * 0.6, 0);
+    }
+
+    function loop() {
+      if (!running) return;
+      const t = clock.getElapsedTime();
+      renderFrame(t);
+      renderer.render(scene, camera);
+      raf = requestAnimationFrame(loop);
+    }
+
+    if (reduceMotion) {
+      // One composed still frame — depth and lighting, no motion.
+      mouse.x = -0.25; mouse.y = -0.15;
+      renderFrame(1.1);
+      renderer.render(scene, camera);
+    } else {
+      loop();
+    }
+
+    // Pause when the tab is hidden or the hero scrolls out of view.
+    function setRunning(on: boolean) {
+      if (reduceMotion) return;
+      if (on && !running) { running = true; clock.start(); loop(); }
+      else if (!on && running) { running = false; cancelAnimationFrame(raf); }
+    }
+    document.addEventListener('visibilitychange', () =>
+      setRunning(document.visibilityState === 'visible')
+    );
+    const io = new IntersectionObserver(
+      ([e]) => setRunning(e.isIntersecting),
+      { threshold: 0.01 }
+    );
+    io.observe(host);
+
+    // Mark ready so CSS can fade the canvas in over the backdrop.
+    host.classList.add('is-ready');
+  }
+</script>
+
+<style>
+  .hero3d {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    /* Always a dark brand stage, regardless of page theme. */
+    background:
+      radial-gradient(120% 90% at 72% 18%, #241109 0%, transparent 55%),
+      radial-gradient(90% 80% at 20% 90%, #0e1420 0%, transparent 60%),
+      linear-gradient(180deg, #08080b 0%, #0c0d12 60%, #0a0a0e 100%);
+  }
+
+  /* CSS-only fallback stage: a lit chevron glow, shown until/unless WebGL runs. */
+  .hero3d__backdrop {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(38% 46% at 68% 42%, rgba(250, 93, 19, 0.28) 0%, transparent 70%),
+      radial-gradient(30% 40% at 34% 60%, rgba(120, 150, 220, 0.14) 0%, transparent 70%);
+    filter: blur(2px);
+  }
+
+  .hero3d__canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    opacity: 0;
+    transition: opacity 900ms var(--ease, ease);
+  }
+  .hero3d.is-ready .hero3d__canvas { opacity: 1; }
+
+  /* Fine grain + vignette to seat the render and kill banding. */
+  .hero3d__grain {
+    position: absolute;
+    inset: 0;
+    opacity: 0.06;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .hero3d__vignette {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(115% 115% at 50% 42%, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero3d__canvas { transition: none; }
+  }
+</style>
