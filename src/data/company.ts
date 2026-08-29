@@ -10,7 +10,7 @@
 export const company = {
   name: 'KCNEX Innovations',
   shortName: 'KCNEX',
-  tagline: 'We build software that protects people.',
+  tagline: 'From code to customers — software, web, DevOps, and digital marketing.',
 
   // Verified from the existing KinSentry site copy.
   builtIn: 'India',
@@ -41,7 +41,63 @@ export const company = {
   },
 } as const;
 
+
+/*
+ * The four service lines. The home page services grid and any future
+ * /services page read from this array. Keep points concrete — capabilities
+ * we actually offer, not aspirations.
+ */
+export interface Service {
+  title: string;
+  summary: string;
+  points: string[];
+}
+
+export const services: Service[] = [
+  {
+    title: 'Software & app development',
+    summary:
+      'Custom software and mobile apps, from the first spec to release and beyond.',
+    points: [
+      'Web, desktop, and mobile applications',
+      'APIs and third-party integrations',
+      'Legacy rebuilds and rescues',
+    ],
+  },
+  {
+    title: 'Web design & development',
+    summary:
+      'Websites and web apps that are fast, accessible, and easy to maintain.',
+    points: [
+      'Marketing sites and e-commerce',
+      'Web applications and dashboards',
+      'Performance and accessibility work',
+    ],
+  },
+  {
+    title: 'DevOps services',
+    summary:
+      'Pipelines and infrastructure that make shipping boring — in the good way.',
+    points: [
+      'CI/CD pipelines and automation',
+      'Cloud infrastructure and migrations',
+      'Monitoring, backups, and cost control',
+    ],
+  },
+  {
+    title: 'Digital marketing',
+    summary:
+      'Growth for the things we ship — measured, not guessed.',
+    points: [
+      'SEO and content',
+      'Paid campaigns',
+      'Analytics and conversion',
+    ],
+  },
+];
+
 export const navLinks = [
+  { href: '/#services', label: 'Services' },
   { href: '/#products', label: 'Products' },
   { href: '/about', label: 'About' },
   { href: '/security', label: 'Security' },

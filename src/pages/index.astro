@@ -2,39 +2,81 @@
 import Base from '../layouts/Base.astro';
 import ProductCard from '../components/ProductCard.astro';
 import { products } from '../data/products';
-import { company } from '../data/company';
+import { company, services } from '../data/company';
 ---
 
 <Base
-  title="Software that protects people"
-  description="KCNEX Innovations builds consumer software that protects people online. Our first product, KinSentry, stops tech-support scams targeting older adults."
+  title="Develop. Deploy. Grow."
+  description="KCNEX Innovations is a software development studio: software and app development, website and web app design and development, DevOps, and digital marketing — from code to customers."
 >
   <!-- 1. Hero -->
   <section class="section hero">
     <div class="container">
       <p class="eyebrow">{company.name}</p>
-      <h1 class="hero-title">We build software that protects people.</h1>
+      <h1 class="hero-title">Develop. Deploy. Grow.</h1>
       <p class="hero-lede prose">
-        KCNEX is a small product company working on a narrow problem: the
-        everyday scams that cost ordinary people their savings. We ship tools
-        for the person being targeted — not for security experts.
+        KCNEX is a software studio that takes products from the first line of
+        code to real customers — software and app development, websites and
+        web apps, DevOps, and digital marketing, under one roof.
       </p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="#products">See what we build</a>
-        <a class="btn btn-secondary" href="/about">About the company</a>
+        <a class="btn btn-primary" href="#services">See what we do</a>
+        <a class="btn btn-secondary" href="/contact">Start a project</a>
       </div>
     </div>
   </section>
 
-  <!-- 2. Products grid -->
-  <section class="section band-alt" id="products">
+  <!-- 2. Services grid -->
+  <section class="section band-alt" id="services">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Services</p>
+        <h2 class="section-title">What we do</h2>
+        <p class="prose">
+          Four disciplines, one team. Most projects use more than one — that is
+          the point.
+        </p>
+      </div>
+
+      <div class="service-grid">
+        {
+          services.map((service) => (
+            <article class="service-card">
+              <h3 class="service-title">{service.title}</h3>
+              <p class="service-summary">{service.summary}</p>
+              <ul class="service-points">
+                {service.points.map((point) => (
+                  <li>
+                    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                      <path
+                        d="m9 6 6 6-6 6"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Products grid -->
+  <section class="section" id="products">
     <div class="container">
       <div class="section-head">
         <p class="eyebrow">Products</p>
-        <h2 class="section-title">What we build</h2>
+        <h2 class="section-title">What we have shipped for ourselves</h2>
         <p class="prose">
-          Everything KCNEX ships is listed here — including what is still in
-          development. If it is not on this page, it does not exist yet.
+          Alongside client work we build our own products, end to end — the
+          same way we build for clients. Everything we ship is listed here.
         </p>
       </div>
 
@@ -55,7 +97,7 @@ import { company } from '../data/company';
     </div>
   </section>
 
-  <!-- 3. Mission / principles -->
+  <!-- 4. Mission / principles -->
   <section class="section band-deep">
     <div class="container">
       <div class="section-head">
@@ -66,28 +108,28 @@ import { company } from '../data/company';
       <ol class="principles">
         <li>
           <span class="principle-num">01</span>
-          <h3 class="principle-title">Build for the person being targeted</h3>
+          <h3 class="principle-title">One team, end to end</h3>
           <p class="principle-body">
-            Our users are often not the people who installed our software. If a
-            tool only works when the user is technical, careful, and
-            unhurried, it does not work.
+            The people who write the code set up the pipelines and run the
+            launch. Develop, deploy, grow — nothing gets lost in handovers
+            between vendors.
           </p>
         </li>
         <li>
           <span class="principle-num">02</span>
-          <h3 class="principle-title">Collect as little as possible</h3>
+          <h3 class="principle-title">Build for the person using it</h3>
           <p class="principle-body">
-            Protective software sits in a privileged position. We treat that as
-            a reason to hold less data, not more, and we document exactly what
-            each product touches.
+            If a product only works when the user is technical, careful, and
+            unhurried, it does not work. We build for real people on their
+            worst day, not demo audiences.
           </p>
         </li>
         <li>
           <span class="principle-num">03</span>
           <h3 class="principle-title">Say only what is true</h3>
           <p class="principle-body">
-            No invented user counts, no borrowed logos, no security theatre. A
-            claim on this site is one we can show you the basis for.
+            No invented user counts, no borrowed logos, no padded case studies.
+            A claim on this site is one we can show you the basis for.
           </p>
         </li>
         <li>
@@ -95,24 +137,25 @@ import { company } from '../data/company';
           <h3 class="principle-title">Answer when something breaks</h3>
           <p class="principle-body">
             A real inbox, monitored by the people who wrote the code. Reports of
-            security issues get a response, not a form.
+            problems get a response, not a form.
           </p>
         </li>
       </ol>
     </div>
   </section>
 
-  <!-- 4. Contact CTA -->
+  <!-- 5. Contact CTA -->
   <section class="section">
     <div class="container cta">
-      <h2 class="cta-title">Working on something adjacent?</h2>
+      <h2 class="cta-title">Have a project in mind?</h2>
       <p class="prose cta-body">
-        We are open to partnerships with consumer banks, elder-care
-        organisations, and anyone fighting the same problem from another angle.
+        Tell us what you want to build — or what you are stuck with. You will
+        get an honest assessment from the people who would do the work, not a
+        sales deck.
       </p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="/contact">Get in touch</a>
-        <a class="btn btn-secondary" href="/security">Report a security issue</a>
+        <a class="btn btn-primary" href="/contact">Start a project</a>
+        <a class="btn btn-secondary" href="#products">See what we ship</a>
       </div>
     </div>
   </section>
@@ -147,6 +190,65 @@ import { company } from '../data/company';
   .section-title {
     font-size: clamp(30px, 4.4vw, 44px);
     margin-bottom: 16px;
+  }
+
+  /* 2x2 on desktop — four cards split 3+1 otherwise, which looks lopsided. */
+  .service-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
+    gap: 20px;
+    align-items: stretch;
+  }
+
+  .service-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 26px;
+    transition: border-color var(--dur) var(--ease),
+                box-shadow var(--dur) var(--ease);
+  }
+
+  .service-card:hover {
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .service-title {
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+
+  .service-summary {
+    font-size: 14.5px;
+    color: var(--muted-foreground);
+    margin-bottom: 18px;
+  }
+
+  .service-points {
+    list-style: none;
+    padding: 0;
+    margin: auto 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .service-points li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--muted-foreground);
+    line-height: 1.5;
+  }
+
+  .service-points svg {
+    color: var(--primary);
+    flex-shrink: 0;
+    margin-top: 3px;
   }
 
   /* One real product shouldn't stretch to fill a 3-up grid and look padded. */

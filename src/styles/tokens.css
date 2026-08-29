@@ -1,74 +1,75 @@
 /*
  * KCNEX Innovations — design tokens
  * ---------------------------------
- * Palette, radii, and fonts come from the KCNEX theme (tweakcn/shadcn-shaped).
- * Mapped to plain CSS custom properties: this site has no Tailwind, so the
- * source theme's `@theme inline` block (which only aliases these for Tailwind
- * utilities) is intentionally omitted.
+ * Brand black & orange, from the 2026 logo redesign (see BRAND.md and the
+ * Desktop/KCNEX/Logo Variations asset set). Mapped to plain CSS custom
+ * properties: this site has no Tailwind.
  *
- * DARK MODE: the source theme switches on a `.dark` class, which assumes a JS
- * theme toggle. This site ships zero JS, so dark mode follows the OS via
- * prefers-color-scheme instead. If a toggle is ever added, reintroduce
+ * DARK MODE: no JS ships on this site, so dark mode follows the OS via
+ * prefers-color-scheme. If a toggle is ever added, reintroduce
  * `.dark` / `.light` classes carrying the same values as the media query below.
  *
- * Every foreground/background pair in use is measured — see BRAND.md.
+ * Every foreground/background pair in use is computed against WCAG 2.1 —
+ * see BRAND.md for the measured table.
  */
 
 :root {
   color-scheme: light;
 
   /* ── Theme palette (light) ─────────────────────────────── */
-  --background: #f7f7f8;
-  --foreground: #1a2530;
+  --background: #f8f7f5;
+  --foreground: #1a1d22;
   --card: #ffffff;
-  --card-foreground: #1a2530;
+  --card-foreground: #1a1d22;
   --popover: #ffffff;
-  --popover-foreground: #1a2530;
-  --primary: #1a6289;
+  --popover-foreground: #1a1d22;
+  /* Brand orange #fa5d13 is only 2.95:1 on the page — fine for the logo,
+   * a failure for links and buttons. Text-bearing orange uses this darker
+   * cut (4.84:1) instead; the true brand hue lives in --logo-accent. */
+  --primary: #c2410c;
   --primary-foreground: #ffffff;
-  --secondary: #ebeef2;
-  --secondary-foreground: #1a2530;
-  --muted: #ebeef2;
-  --muted-foreground: #5a6573;
-  --accent: #d9e6ee;
-  --accent-foreground: #0f4866;
-  --destructive: #b8413c;
+  --secondary: #efedea;
+  --secondary-foreground: #1a1d22;
+  --muted: #efedea;
+  --muted-foreground: #5d6067;
+  --accent: #fceade;
+  --accent-foreground: #8f3210;
+  --destructive: #b3362e;
   --destructive-foreground: #ffffff;
-  --border: #dbe0e6;
-  --input: #dbe0e6;
-  --ring: #1d6c96;
+  --border: #e4e1dd;
+  --input: #e4e1dd;
+  --ring: #ea580c;
 
-  --chart-1: #1d6c96;
-  --chart-2: #83c4e7;
-  --chart-3: #144a67;
+  --chart-1: #ea580c;
+  --chart-2: #fdba74;
+  --chart-3: #9a3412;
   --chart-4: #2f7a5c;
   --chart-5: #d9a24c;
 
   /* ── Site extensions (light) ───────────────────────────────
    * The theme is app-shaped and has no token for a full-bleed emphasis band,
    * a *visible* interactive border, or hover states. These fill those gaps,
-   * derived from the theme's own colours. */
+   * derived from the brand palette. */
 
   /* Emphasis band: inverts in light, lifts in dark. */
-  --band: #1a2530;              /* = --foreground */
-  --band-foreground: #f7f7f8;   /* 14.52:1 on --band */
-  --band-muted: #a8b4c2;        /*  7.38:1 on --band */
-  --band-accent: #83c4e7;       /*  8.15:1 on --band (= --chart-2) */
-  --band-border: rgba(247, 247, 248, 0.16);
+  --band: #171a1f;              /* brand black, softened for large fields */
+  --band-foreground: #f8f7f5;   /* 16.29:1 on --band */
+  --band-muted: #a6abb3;        /*  7.56:1 on --band */
+  --band-accent: #ff8a4d;       /*  7.47:1 on --band */
+  --band-border: rgba(248, 247, 245, 0.16);
 
-  /* --border (#dbe0e6) is 1.24:1 on --background — fine as a decorative
-   * hairline, but it FAILS WCAG 1.4.11 (3:1) for anything that conveys a
-   * control's boundary. Outline buttons use this instead. */
-  --border-strong: #7d8a99;     /*  3.29:1 on --background */
+  /* --border (#e4e1dd) is decorative only — it FAILS WCAG 1.4.11 (3:1) for
+   * control boundaries. Outline buttons use this instead. */
+  --border-strong: #8b8781;     /*  3.34:1 on --background */
 
-  --primary-hover: #144a67;     /*  8.90:1 (= --chart-3) */
-  --success: #2f7a5c;           /*  4.83:1 (= --chart-4) — "live" status only */
+  --primary-hover: #9a3412;     /*  6.82:1 */
+  --success: #2f7a5c;           /*  4.83:1 — "live" status only */
 
-  /* Logo: the mark must contrast with the block, which flips per mode.
-   * --primary on the light-mode block is only 2.33:1, hence --chart-2. */
-  --logo-block: #1a2530;         /* = --foreground */
-  --logo-mark: #83c4e7;          /*  8.15:1 on --logo-block */
-  --logo-mark-on-light: #1a6289; /*  >=5.46:1 when the block is light */
+  /* Logo: two ink chevrons + one orange chevron. The ink flips per mode;
+   * the accent is the exact brand orange and stays put. Brand mark, not
+   * text — exempt from 1.4.3. */
+  --logo-ink: #0b0b0e;          /* brand black */
+  --logo-accent: #fa5d13;       /* brand orange */
 
   /* ── Shape ─────────────────────────────────────────────── */
   --radius: 0.625rem;                      /* 10px */
@@ -87,7 +88,7 @@
   --shadow-offset-y: 1px;
   --shadow-blur: 4px;
   --shadow-spread: -1px;
-  --shadow-color: #1a2530;
+  --shadow-color: #1a1d22;
   --shadow-opacity: 0.05;
   --shadow: var(--shadow-offset-x) var(--shadow-offset-y) var(--shadow-blur)
     var(--shadow-spread)
@@ -106,62 +107,63 @@
   --z-nav: 50;
 
   /* Nav backdrop, tinted to match --background in each mode. */
-  --nav-bg: rgba(247, 247, 248, 0.88);
+  --nav-bg: rgba(248, 247, 245, 0.88);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     color-scheme: dark;
 
-    --background: #0f1419;
-    --foreground: #e5e9ee;
-    --card: #161c24;
-    --card-foreground: #e5e9ee;
-    --popover: #1c232d;
-    --popover-foreground: #e5e9ee;
-    --primary: #7ab0d0;
-    --primary-foreground: #0f1419;
-    --secondary: #1e2630;
-    --secondary-foreground: #e5e9ee;
-    --muted: #1e2630;
-    --muted-foreground: #8590a0;
-    --accent: #1e2630;
-    --accent-foreground: #a8cfe3;
-    --destructive: #dc6e69;
-    --destructive-foreground: #160807;
-    --border: #28313d;
-    --input: #28313d;
-    --ring: #7ab0d0;
+    --background: #101114;
+    --foreground: #e9e9ea;
+    --card: #17181c;
+    --card-foreground: #e9e9ea;
+    --popover: #1d1e23;
+    --popover-foreground: #e9e9ea;
+    /* Dark backgrounds can afford a brighter orange: 8.09:1. */
+    --primary: #ff8a50;
+    --primary-foreground: #201009;
+    --secondary: #1e1f24;
+    --secondary-foreground: #e9e9ea;
+    --muted: #1e1f24;
+    --muted-foreground: #9b9ca3;
+    --accent: #26201b;
+    --accent-foreground: #ffb489;
+    --destructive: #e0655c;
+    --destructive-foreground: #1c0605;
+    --border: #2a2b30;
+    --input: #2a2b30;
+    --ring: #ff8a50;
 
-    --chart-1: #7ab0d0;
-    --chart-2: #a8cfe3;
-    --chart-3: #5ba3cc;
+    --chart-1: #ff8a50;
+    --chart-2: #ffb489;
+    --chart-3: #e56a2c;
     --chart-4: #56ad84;
     --chart-5: #e8b25c;
 
     /* Band lifts off the page instead of inverting — a light band in dark
      * mode would glare. */
-    --band: #161c24;              /* = --card */
-    --band-foreground: #e5e9ee;   /* 14.05:1 on --band */
-    --band-muted: #8590a0;        /*  5.30:1 on --band */
-    --band-accent: #7ab0d0;       /*  7.30:1 on --band */
-    --band-border: rgba(229, 233, 238, 0.14);
+    --band: #17181c;              /* = --card */
+    --band-foreground: #e9e9ea;   /* 14.62:1 on --band */
+    --band-muted: #9b9ca3;        /*  6.49:1 on --band */
+    --band-accent: #ff9a66;       /*  8.50:1 on --band */
+    --band-border: rgba(233, 233, 234, 0.14);
 
-    --border-strong: #647285;     /*  3.78:1 on --background */
-    --primary-hover: #a8cfe3;     /* 11.19:1 (= --chart-2) */
-    --success: #56ad84;           /*  6.79:1 (= --chart-4) */
+    --border-strong: #6e7077;     /*  3.82:1 on --background */
+    --primary-hover: #ffa578;     /*  9.80:1 */
+    --success: #56ad84;           /*  6.93:1 */
 
-    /* Block flips to light, so the mark flips to the dark blue. */
-    --logo-block: #e5e9ee;        /* = --foreground */
-    --logo-mark: #1a6289;         /*  5.46:1 on --logo-block */
-    --logo-mark-on-light: #1a6289;
+    /* Ink flips to light; the accent is brand orange in both modes
+     * (5.97:1 here — comfortably visible on the dark page). */
+    --logo-ink: #e9e9ea;
+    --logo-accent: #fa5d13;
 
     --shadow-color: #000000;
     --shadow-opacity: 0.3;
     --shadow-blur: 3px;
     --shadow-spread: 0px;
 
-    --nav-bg: rgba(15, 20, 25, 0.88);
+    --nav-bg: rgba(16, 17, 20, 0.88);
   }
 }
 
