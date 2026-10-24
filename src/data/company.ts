@@ -22,8 +22,18 @@ export const company = {
   // TODO(kcnex): the year KCNEX itself was founded (not KinSentry's).
   founded: '20XX',
 
-  address: '75 E 3rd St Ste 7, Sheridan, WY 82801, USA',
-  phone: '+1 307 3814519',
+  offices: [
+    {
+      country: 'USA',
+      address: '75 E 3rd St Ste 7, Sheridan, WY 82801, USA',
+      phone: '+1 307 3814519',
+    },
+    {
+      country: 'India',
+      address: 'Anandapur, Kolkata 700107, India',
+      phone: '+91 9883374386',
+    },
+  ],
 
   email: {
     // TODO(kcnex): create these on the kcnex domain, or point them at the

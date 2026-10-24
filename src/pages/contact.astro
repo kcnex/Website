@@ -71,20 +71,29 @@ const channels = [
             <dt>Serving</dt>
             <dd>{company.serves.join(', ')}</dd>
           </div>
-          <div>
-            <dt>Phone</dt>
-            <dd><a href={`tel:${company.phone.replace(/[^+\d]/g, '')}`}>{company.phone}</a></dd>
-          </div>
-          {
-            company.address && (
-              <div>
-                <dt>Address</dt>
-                <dd>{company.address}</dd>
-              </div>
-            )
-          }
         </dl>
       </div>
+
+      <section class="offices" aria-labelledby="offices-title" data-reveal>
+        <h2 class="detail-title" id="offices-title">Our offices</h2>
+        <div class="office-grid">
+          {company.offices.map((office) => (
+            <article class="office">
+              <h3>{office.country}</h3>
+              <dl class="office-details">
+                <div>
+                  <dt>Address</dt>
+                  <dd>{office.address}</dd>
+                </div>
+                <div>
+                  <dt>Contact</dt>
+                  <dd><a href={`tel:${office.phone.replace(/[^+\d]/g, '')}`}>{office.phone}</a></dd>
+                </div>
+              </dl>
+            </article>
+          ))}
+        </div>
+      </section>
     </div>
   </section>
 </Base>
@@ -167,6 +176,49 @@ const channels = [
   .detail-title {
     font-size: 22px;
     margin-bottom: 20px;
+  }
+
+  .offices {
+    margin-top: 24px;
+    padding: 30px;
+    border-radius: var(--radius-lg);
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(12px);
+    box-shadow: var(--depth-shadow);
+  }
+
+  .office-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  .office {
+    min-width: 0;
+    padding: 22px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--card);
+  }
+
+  .office h3 {
+    margin: 0 0 18px;
+    font-size: 20px;
+  }
+
+  .office-details {
+    display: grid;
+    gap: 18px;
+    margin: 0;
+  }
+
+  .office-details a {
+    color: var(--primary);
+  }
+
+  @media (max-width: 640px) {
+    .office-grid { grid-template-columns: 1fr; }
   }
 
   .details {
