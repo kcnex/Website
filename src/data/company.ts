@@ -22,9 +22,8 @@ export const company = {
   // TODO(kcnex): the year KCNEX itself was founded (not KinSentry's).
   founded: '20XX',
 
-  // TODO(kcnex): a real, monitored address. Chrome Web Store and payment
-  // processors may ask for one. Leave blank rather than inventing it.
-  address: '',
+  address: '75 E 3rd St Ste 7, Sheridan, WY 82801, USA',
+  phone: '+1 307 3814519',
 
   email: {
     // TODO(kcnex): create these on the kcnex domain, or point them at the

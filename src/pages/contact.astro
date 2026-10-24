@@ -71,6 +71,10 @@ const channels = [
             <dt>Serving</dt>
             <dd>{company.serves.join(', ')}</dd>
           </div>
+          <div>
+            <dt>Phone</dt>
+            <dd><a href={`tel:${company.phone.replace(/[^+\d]/g, '')}`}>{company.phone}</a></dd>
+          </div>
           {
             company.address && (
               <div>
